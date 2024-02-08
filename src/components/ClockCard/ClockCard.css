@@ -1,0 +1,41 @@
+.clock-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 15px;
+    background-color: #fff;
+    padding: 5px 10px;
+    border-radius: 6px;
+}
+.time {
+    text-align: center;
+    font-size: 16px;
+}
+
+.input-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.input {
+    min-height: 25px;
+    font-size: 12px;
+    line-height: 1.3;
+    color: #2C2738;
+    border: 1px solid #DBE2EA;
+    box-shadow: 0 4px 8px rgba(44, 39, 56, 0.04);
+    border-radius: 6px;
+    padding-left: 10px;
+    background: url("../../assets/icon-arrow.svg") 98% 50% no-repeat;
+}
+
+.input:hover {
+    cursor: pointer;
+}
+
+.input:focus {
+    outline-color: #0880AE;
+
+}
