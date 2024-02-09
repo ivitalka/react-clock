@@ -1,18 +1,19 @@
 import './App.css'
 import React from 'react';
-import { useEffect, useState } from 'react';
-import {ClockCard} from "../ClockCard";
-import {Preloader} from "../Preloader";
-import {useDispatch} from 'react-redux'
-import {setTimezones} from '../../store/timezoneSlice'
-import {initialClockCard} from '../../store/clockCardSlice'
-import store from '../../store'
 import axios from "axios";
 import moment from "moment";
+import { useEffect, useState } from 'react';
+import { ClockCard } from "../ClockCard";
+import { Preloader } from "../Preloader";
+import store from '../../store'
+import { useDispatch } from 'react-redux'
+import { initialClockCard } from '../../store/clockCardSlice'
+import { setTimezones } from '../../store/timezoneSlice'
+import {setTime} from "../../store/timeSlice";
 
 
 
-const App = () => {
+export const App = () => {
     const [isLoading, setIsLoading] = useState(false)
     const clockCount = 2
     const dispatch = useDispatch()
@@ -31,7 +32,6 @@ const App = () => {
             .catch(e => console.log(e))
     }
 
-
     useEffect(() => {
         getTimezones()
             .then(() => {
@@ -42,14 +42,23 @@ const App = () => {
                     dispatch(initialClockCard({
                         id: index,
                         dropDownIsOpen: false,
-                        value: moment().utcOffset(parseInt(timezone)).format('HH:mm:ss'),
                         timezone: name,
                         offset: parseInt(timezone)}))
                 })
+                dispatch(setTime(moment().format('HH:mm:ss')))
             })
             .then(() => setIsLoading(true))
             .catch(e => console.log(e))
-    }, [])
+    })
+
+    useEffect(() => {
+        const interval = setInterval(() => dispatch(setTime(moment().format('HH:mm:ss'))), 1000);
+
+        return () => {
+            clearInterval(interval);
+        };
+    }, []);
+
 
     return (
             <div className={'container'}>
@@ -63,6 +72,3 @@ const App = () => {
             </div>
     );
 }
-
-
-export default App

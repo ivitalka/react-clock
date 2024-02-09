@@ -1,4 +1,5 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+
 
 const timezoneSlice = createSlice({
     name: 'timezones',
@@ -12,6 +13,5 @@ const timezoneSlice = createSlice({
     }
 })
 
-export const {setTimezones} = timezoneSlice.actions
-
+export const { setTimezones } = timezoneSlice.actions
 export default timezoneSlice.reducer

@@ -1,0 +1,15 @@
+.clock-mark {
+    position: absolute;
+    left: 50%;
+    right: 50%;
+    top: 0;
+    bottom: 0;
+}
+.clock-mark-body {
+    position: absolute;
+    background-color: black;
+    transform: translateX(-50%);
+    height: 10px;
+    width: 3px;
+}
+

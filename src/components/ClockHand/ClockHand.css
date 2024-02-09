@@ -1,0 +1,27 @@
+.clock-hand {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    right: 50%;
+}
+
+.clock-hand-body {
+    background-color: black;
+    width: 2px;
+    top: 10%;
+    bottom: 45%;
+    position: absolute;
+    transform: translateX(-50%);
+}
+
+.clock-hand-body-hour {
+    width: 4px;
+    top: 30%;
+}
+
+.clock-hand-body-seconds {
+    top: 5%;
+    width: 1px;
+    background-color: red;
+}

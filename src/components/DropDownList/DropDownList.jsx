@@ -1,11 +1,13 @@
 import React from 'react';
 import './DropDownList.css'
-import {useDispatch, useSelector} from "react-redux";
-import {setDropDown, setOffset, setTimezone, setValue} from "../../store/clockCardSlice";
 import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { setDropDown, setOffset, setTimezone } from "../../store/clockCardSlice";
+import { setTime } from "../../store/timeSlice";
 
 
-const DropDownList = ({id}) => {
+
+export const DropDownList = ({ id }) => {
     const dispatch = useDispatch()
     const timezoneList = useSelector(state => state.timezones.timezoneList)
     const clockCards = useSelector(state => state.clockCards.clockCardList)
@@ -15,10 +17,11 @@ const DropDownList = ({id}) => {
         const {timezone} = timezoneList.find(item => item.name === e.target.textContent)
         dispatch(setTimezone({id: id, timezone: e.target.textContent}));
         dispatch(setDropDown({id}))
-        dispatch(setValue({id: id, value: moment().utcOffset(parseInt(timezone)).format("HH:mm:ss")}))
+        dispatch(setTime(moment().utcOffset(parseInt(timezone)).format('HH:mm:ss')))
         dispatch(setOffset({id: id, offset: parseInt(timezone)}))
 
     };
+
 
     return(
         <ul className={'list'}
@@ -31,5 +34,3 @@ const DropDownList = ({id}) => {
         </ul>
     )
 }
-
-export default DropDownList;

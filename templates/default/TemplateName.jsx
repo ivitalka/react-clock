@@ -1,10 +1,10 @@
 import React from 'react';
-import styles from './TemplateName.module.less';
+import './TemplateName.css';
 
 
 export const TemplateName = () => {
     return (
-        <div className={styles.templateName}>
+        <div className={'templateName'}>
             TemplateName Component
         </div>
     );

@@ -1,4 +1,5 @@
-import {createSlice} from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
+
 
 const clockCardSlice = createSlice({
     name: 'clockCards',
@@ -13,10 +14,6 @@ const clockCardSlice = createSlice({
             const changedCard = state.clockCardList.find(card => card.id === action.payload.id)
             changedCard.dropDownIsOpen = !changedCard.dropDownIsOpen
         },
-        setValue(state, action) {
-            const changedCard = state.clockCardList.find(card => card.id === action.payload.id)
-            changedCard.value = action.payload.value
-        },
         setTimezone(state, action) {
             const changedCard = state.clockCardList.find(card => card.id === action.payload.id)
             changedCard.timezone = action.payload.timezone
@@ -28,6 +25,5 @@ const clockCardSlice = createSlice({
     }
 })
 
-export const {initialClockCard, setDropDown, setValue, setTimezone, setOffset} = clockCardSlice.actions
-
+export const { initialClockCard, setDropDown, setTimezone, setOffset } = clockCardSlice.actions
 export default clockCardSlice.reducer
