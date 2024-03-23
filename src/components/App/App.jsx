@@ -1,55 +1,44 @@
 import './App.css'
 import React from 'react';
-import axios from "axios";
 import moment from "moment";
 import { useEffect, useState } from 'react';
 import { ClockCard } from "../ClockCard";
 import { Preloader } from "../Preloader";
-import store from '../../store'
-import { useDispatch } from 'react-redux'
+import {useDispatch, useSelector} from 'react-redux'
 import { initialClockCard } from '../../store/clockCardSlice'
-import { setTimezones } from '../../store/timezoneSlice'
-import {setTime} from "../../store/timeSlice";
+import { fetchTimezones } from '../../store/timezoneSlice'
+import { setTime } from "../../store/timeSlice";
 
 
 
 export const App = () => {
-    const [isLoading, setIsLoading] = useState(false)
-    const clockCount = 2
     const dispatch = useDispatch()
-
-    const getTimezones = async () => {
-        await axios({
-            method: 'get',
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            url: '/timezones.json'
-        }).then(res => {
-            dispatch(setTimezones(res.data))
-        })
-            .catch(e => console.log(e))
-    }
+    const clockCount = 2
+    const [isAppReady, setIsAppReady] = useState(false)
+    const {timezoneList, isLoading, error, status} = useSelector(state => state.timezones)
 
     useEffect(() => {
-        getTimezones()
-            .then(() => {
-                const [initialZone] = store.getState().timezones.timezoneList
-                const {name, timezone} = initialZone
-                const arr = [...Array(clockCount)]
-                arr.map((item, index) => {
-                    dispatch(initialClockCard({
-                        id: index,
-                        dropDownIsOpen: false,
-                        timezone: name,
-                        offset: parseInt(timezone)}))
-                })
-                dispatch(setTime(moment().format('HH:mm:ss')))
+        dispatch(fetchTimezones())
+    }, [])
+
+
+    useEffect(() => {
+        if(!isLoading ) {
+            const [initialZone] = timezoneList
+            const {name, timezone} = initialZone
+            const arr = [...Array(clockCount)]
+            arr.map((item, index) => {
+                dispatch(initialClockCard({
+                    id: index,
+                    dropDownIsOpen: false,
+                    timezone: name,
+                    offset: parseInt(timezone)}))
             })
-            .then(() => setIsLoading(true))
-            .catch(e => console.log(e))
-    })
+            dispatch(setTime(moment().format('HH:mm:ss')))
+            setIsAppReady(true)
+        }
+    }, [isLoading])
+
 
     useEffect(() => {
         const interval = setInterval(() => dispatch(setTime(moment().format('HH:mm:ss'))), 1000);
@@ -63,9 +52,10 @@ export const App = () => {
     return (
             <div className={'container'}>
                 <div className={'wrapper'}>
-                    {!isLoading && <Preloader/>}
+                    {status === 'rejected' && <h2>{`Error: ${error}`}</h2>}
+                    {status === 'pending' && <Preloader/>}
                     {
-                        isLoading &&
+                        isAppReady &&
                         [...Array(clockCount)].map((item, index) => <ClockCard id={index} key={index}/>)
                     }
                 </div>
